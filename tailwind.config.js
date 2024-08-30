@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import customScrollbarPlugin from './src/utils/custom-scrollbar-plugin'
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -71,7 +74,13 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      screens: {
+        'mdLg': '950px'
+      }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    customScrollbarPlugin
+  ],
 }
