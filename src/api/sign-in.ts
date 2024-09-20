@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 
-interface SignInProps {
+export interface SignInProps {
     email: string;
 }
 
