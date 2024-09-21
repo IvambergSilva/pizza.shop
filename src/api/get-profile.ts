@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 
-interface GetProfileProps {
+export interface GetProfileProps {
     id: string;
     name: string;
     email: string;
