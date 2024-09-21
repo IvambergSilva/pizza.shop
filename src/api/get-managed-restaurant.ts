@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 
-interface GetManagedRestaurantProps {
+export interface GetManagedRestaurantProps {
     id: string;
     name: string;
     createdAt: Date | null;
