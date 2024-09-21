@@ -1,4 +1,4 @@
-import { Building, ChevronDown, LogOut } from "lucide-react";
+import { Building, ChevronDown, LogOut, User } from "lucide-react";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { getProfile } from "@/api/get-profile";
@@ -7,10 +7,15 @@ import { getManagedRestaurant } from "@/api/get-managed-restaurant";
 import { Skeleton } from "./ui/skeleton";
 import { signOut } from "@/api/sign-out";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogTrigger } from "./ui/dialog";
+import { Dialog } from "./ui/dialog";
 import { StoreProfileDialog } from "./store-profile-dialog";
+import { useState } from "react";
+import { UserProfileDialog } from "./user-profile-dialog";
 
 export function AccountMenu() {
+    const [isUserProfileOpen, setUserProfileOpen] = useState(false);
+    const [isStoreProfileOpen, setStoreProfileOpen] = useState(false);
+
     const { data: profile, isLoading: isLoadingProfile } = useQuery({
         queryKey: ['profile'],
         queryFn: getProfile,
@@ -31,12 +36,11 @@ export function AccountMenu() {
 
     async function handleSignOutFn() {
         await signOutFn();
-        navigate('/sign-in')
-        console.log('ok');
+        navigate('/sign-in', { replace: true })
     }
 
     return (
-        <Dialog>
+        <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="flex items-center gap-2 select-none">
@@ -63,13 +67,25 @@ export function AccountMenu() {
                             )
                         }
                     </DropdownMenuLabel>
+
                     <DropdownMenuSeparator />
-                    <DialogTrigger asChild>
-                        <DropdownMenuItem className="cursor-pointer">
-                            <Building className="h-4 w-4 mr-2" />
-                            <span>Perfil da loja</span>
-                        </DropdownMenuItem>
-                    </DialogTrigger>
+
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => setUserProfileOpen(true)}
+                    >
+                        <User className="h-4 w-4 mr-2" />
+                        <span>Perfil do usuário</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={() => setStoreProfileOpen(true)}
+                    >
+                        <Building className="h-4 w-4 mr-2" />
+                        <span>Perfil da loja</span>
+                    </DropdownMenuItem>
+
                     <DropdownMenuItem
                         className="text-rose-500 dark:text-rose-400 cursor-pointer"
                         onClick={() => handleSignOutFn()}
@@ -79,8 +95,20 @@ export function AccountMenu() {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
-            
-            <StoreProfileDialog/>
-        </Dialog>
+
+            <Dialog
+                open={isUserProfileOpen}
+                onOpenChange={setUserProfileOpen}
+            >
+                <UserProfileDialog />
+            </Dialog>
+
+            <Dialog
+                open={isStoreProfileOpen}
+                onOpenChange={setStoreProfileOpen}
+            >
+                <StoreProfileDialog />
+            </Dialog>
+        </>
     )
 }
