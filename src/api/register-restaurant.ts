@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 
-interface RegisterRestaurantProps {
+export interface RegisterRestaurantProps {
     restaurantName: string;
     managerName: string;
     email: string;
@@ -13,7 +13,7 @@ export async function registerRestaurant({
     email,
     phone
 }: RegisterRestaurantProps) {
-    await api.post('/authenticate', {
+    await api.post('/restaurants', {
         restaurantName,
         managerName,
         email,
